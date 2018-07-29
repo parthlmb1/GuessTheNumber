@@ -1,5 +1,6 @@
 package com.example.test.guessthenumber;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,30 +12,34 @@ import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
 
+    int randNum;
+
+    public void generateRandNum(){
+        Random rand = new Random();
+        randNum = rand.nextInt(10)+1;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        generateRandNum();
     }
 
     protected void checkTheNumber(View view){
 
+        EditText guessNum = (EditText) findViewById(R.id.editText);
 
-        EditText userInput = (EditText) findViewById(R.id.editText);
-        Random rand = new Random();
-        int randNum = rand.nextInt(10)+1;
-        int input = Integer.parseInt(userInput.getText().toString());
+        int userInput = Integer.parseInt(guessNum.getText().toString());
 
-        if (userInput.getText().toString().isEmpty()){
-            return;
+        if(userInput > randNum){
+            Toast.makeText(this, "Lower!", Toast.LENGTH_SHORT).show();
+        } else if(userInput < randNum) {
+            Toast.makeText(this, "Higher!", Toast.LENGTH_SHORT).show();
         } else {
-            if(randNum > input){
-                Toast.makeText(this, "Higher!", Toast.LENGTH_SHORT).show();
-            } else if(randNum < input) {
-                Toast.makeText(this, "Lower!", Toast.LENGTH_SHORT).show();
-            } else {
-                Toast.makeText(this, "Great Job!", Toast.LENGTH_SHORT).show();
-            }
+            Toast.makeText(this, "Great Job!. Try Again", Toast.LENGTH_SHORT).show();
+            generateRandNum();
         }
     }
 
